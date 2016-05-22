@@ -1,0 +1,8 @@
+New log file opened at Sun May 22 11:59:39 JST 2016 by 23517@aws_webserver
+Taking next connection to: 32770
+New client attempting to connect on port: 36692-32770
+  Address = /172.31.31.63:32770
+This client on port 36692 has uuid e94097b1-b919-4278-b3ed-37fa5eb2d571 configName play-fork-run humanReadableName Play Fork Run protocolVersion 1 featureTags Vector()
+Connected Clients: play-fork-run-e94097b1-b919-4278-b3ed-37fa5eb2d571
+Taking next connection to: 32770
+Checking to see if clients are empty...
