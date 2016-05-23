@@ -76,7 +76,9 @@ $ ->
     messageOnLeft: Handlebars.compile(templateScript.messageOnLeft),
     topicsOnLeft: Handlebars.compile(templateScript.topicsOnLeft)
 
-  ws = new WebSocket $("body").data("ws-url")
+  ws = new ReconnectingWebSocket $("body").data("ws-url")
+  ws.debug = true;
+
   ws.onmessage = (event) ->
     message = JSON.parse event.data
     switch message.type
