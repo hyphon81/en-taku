@@ -114,14 +114,22 @@ $ ->
   ws.onclose = (event) ->
     console.log "WS closed: " + event.code + ": " + event.reason + " " + event
 
+  ws.onopen = (event) ->
+    console.log "WS opened:" + event
+    if currentTopic != undefined
+      console.log "currentTopic: " + currentTopic
+      message = {type: "subscribe", topic: currentTopic}
+      ws.send(JSON.stringify(message))
+    
+
   window.onbeforeunload = ->
     ws.onclose = ->
     ws.close()
 
   msgform().submit (event) ->
-  	if !currentTopic 
-  	  alert "You're not subscribed to any topic."
-  	  return
+    if !currentTopic 
+      alert "You're not subscribed to any topic."
+      return
     event.preventDefault()
     message = { type: "message", topic: currentTopic, msg: comment().val() }
     if messageExists()
