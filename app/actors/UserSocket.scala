@@ -44,6 +44,7 @@ object UserSocket {
   }
 
   case class TopicsListMessage(topics: Seq[String])
+
   object TopicsListMessage {
     implicit val topicsListMessageWrites = new Writes[TopicsListMessage] {
       def writes(topicsListMessage: TopicsListMessage): JsValue = {
@@ -98,6 +99,8 @@ class UserSocket(uid: String, out: ActorRef) extends Actor with ActorLogging {
     case c @ Changed(key) if key == topicsKey =>
       val data = c.get[GSet[String]](topicsKey).elements.toSeq
       out ! Json.toJson(TopicsListMessage(data))
+      //when add a topic
+
     case c @ Changed(LWWRegisterKey(topic)) =>
       for {
         subscribedTopic <- lastSubscribed if (subscribedTopic + "-lwwreg").equals(topic)
@@ -107,6 +110,8 @@ class UserSocket(uid: String, out: ActorRef) extends Actor with ActorLogging {
           if (!historySet(chatMessage))
             out ! Json.toJson(chatMessage)
         }
+        // when send a message
+        
       }
     case g @ GetSuccess(GSetKey(topic), req) =>
       for {
@@ -118,6 +123,9 @@ class UserSocket(uid: String, out: ActorRef) extends Actor with ActorLogging {
         out ! Json.toJson(ChatMessagesListMessage(data))
         replicator ! Subscribe(topicMsgKey(topic), self)
       }
+      // after recieve message list when subscribe a topic
+      showLoginMessage(topic)
+      
     case g @ NotFound(GSetKey(topic), req) =>
       for {
         subscribedTopic <- lastSubscribed if subscribedTopic.equals(topic)
@@ -125,6 +133,9 @@ class UserSocket(uid: String, out: ActorRef) extends Actor with ActorLogging {
         initialHistory = Some(Set.empty[ChatMessage])
         replicator ! Subscribe(topicMsgKey(topic), self)
       }
+      // when first subscribing a topic 
+      showLoginMessage(topic)
+
     case g @ GetFailure(GSetKey(topic), req) =>
       for {
         subscribedTopic <- lastSubscribed if subscribedTopic.equals(topic)
@@ -162,5 +173,16 @@ class UserSocket(uid: String, out: ActorRef) extends Actor with ActorLogging {
               replicator ! FlushChanges
             }
       }
+  }
+
+  def showLoginMessage(topic: String) = {
+    val loginMessage = ChatMessage(topic, "システム", uid + "さんがログインしました。", new java.util.Date())
+    replicator ! Update(GSetKey[ChatMessage](topic), GSet.empty[ChatMessage], WriteLocal) {
+      _ + loginMessage
+    }
+    replicator ! Update(topicMsgKey(topic), LWWRegister[ChatMessage](null), WriteLocal) {
+      reg => reg.withValue(loginMessage)
+    }
+    replicator ! FlushChanges
   }
 }
