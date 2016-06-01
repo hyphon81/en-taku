@@ -192,7 +192,7 @@ $ ->
       enableConfirmButton()
     else
       disableConfirmButton()
-    if event.which is key_enter && !event.shiftKey
+    if event.which is key_enter && event.ctrlKey is true
       event.preventDefault()
       if messageExists()
         msgform().submit()
