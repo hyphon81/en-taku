@@ -18,6 +18,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "bootstrap" % "3.3.4",
   "org.webjars" % "jquery" % "2.1.4",
   "org.webjars" % "handlebars" % "4.0.2",
+  "org.spire-math" %% "spire" % "0.11.0",  // for Mersenne twister
   specs2 % Test
 )
 
@@ -35,5 +36,6 @@ includeFilter in (Assets, LessKeys.less) := "*.less"
 
 javaOptions in Test ++= Seq("-Dlogger.resource=logback-test.xml")
 
+enablePlugins(JavaAppPackaging)
 
 fork in run := true

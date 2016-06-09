@@ -19,10 +19,11 @@ import akka.cluster.ddata.GSetKey
 import akka.cluster.ddata.LWWRegister
 import akka.cluster.ddata.LWWRegisterKey
 
+import dicebot._ // import DiceBot
+
 object UserSocket {
   def props(user: String)(out: ActorRef) = Props(new UserSocket(user, out))
   def topicMsgKey(topic: String) = LWWRegisterKey[ChatMessage](topic + "-lwwreg")
-
   case class Message(topic: String, msg: String)
 
   object Message {
@@ -82,6 +83,10 @@ class UserSocket(uid: String, out: ActorRef) extends Actor with ActorLogging {
 
   replicator ! Get(topicsKey, ReadMajority(timeout = 5.seconds))
 
+  override def preStart = {
+    context.actorOf(Props(classOf[DiceActor]), "dice")
+  }
+
   def receive = LoggingReceive {
     case g @ GetSuccess(key, req) if key == topicsKey =>
       val data = g.get(topicsKey).elements.toSeq
@@ -93,6 +98,10 @@ class UserSocket(uid: String, out: ActorRef) extends Actor with ActorLogging {
       context become afterTopics
     case GetFailure(key, req) if key == topicsKey =>
       replicator ! Get(topicsKey, ReadMajority(timeout = 5.seconds))
+    case ChatMessage(topic, uid, msg, date) if uid == "DiceBot: " =>
+      context become afterTopics
+    case ChatMessage(topic, uid, msg, date) =>
+      context become afterTopics
   }
 
   def afterTopics = LoggingReceive {
@@ -171,6 +180,7 @@ class UserSocket(uid: String, out: ActorRef) extends Actor with ActorLogging {
                 reg => reg.withValue(chatMessage)
               }
               replicator ! FlushChanges
+              context.actorSelection("dice") ! chatMessage
             }
       }
   }
