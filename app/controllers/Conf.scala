@@ -6,6 +6,7 @@ import play.api.Play.current
 trait Conf {
   def clusterHostname = Play.application.configuration.getString("akka.remote.netty.tcp.hostname").getOrElse("127.0.0.1")
   def clusterPort = Play.application.configuration.getInt("akka.remote.netty.tcp.port").getOrElse(0)
+  def googleAnalytics = Play.application.configuration.getString("googleAnalytics.trackingID").getOrElse("XX-XXXXXXXX-X")
 }
 
 object Conf extends Conf
