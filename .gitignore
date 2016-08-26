@@ -8,3 +8,4 @@ target
 /RUNNING_PID
 *.log
 conf/prod.conf
+*.sbtserver*
