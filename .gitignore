@@ -9,3 +9,5 @@ target
 *.log
 conf/prod.conf
 *.sbtserver*
+conf/local_settings/*
+!.gitkeep
