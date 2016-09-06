@@ -1,6 +1,7 @@
 @(title: String)(content: Html)(implicit request: play.api.mvc.RequestHeader)
 
 @import play.api.Configuration
+@import com.typesafe.config.ConfigFactory
 
 <!DOCTYPE html>
 
@@ -29,7 +30,7 @@
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
           })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-          ga('create', '@Configuration().getString("googleAnalytics.trackingId").getOrElse("XX-XXXXXXXX-X")', 'auto');
+          ga('create', '@Configuration(ConfigFactory.load()).getString("googleAnalytics.trackingId").getOrElse("XX-XXXXXXXX-X")', 'auto');
           ga('send', 'pageview');
         </script>
 
