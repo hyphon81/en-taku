@@ -27,7 +27,7 @@ class DiceActor extends Actor {
   def receive = LoggingReceive {
     case ChatMessage(topic, uid, msg, date) =>
       val commandResult = dice.commandCheck(msg)
-      if(commandResult != None){
+      if (commandResult != None) {
         val diceMessage = ChatMessage(topic, "DiceBot: ", msg + "\n-> " + commandResult.get, date)
         replicator ! Update(GSetKey[ChatMessage](topic), GSet.empty[ChatMessage], WriteLocal) {
           _ + diceMessage

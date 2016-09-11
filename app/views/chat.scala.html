@@ -1,11 +1,20 @@
-@(user: String)(implicit request: play.api.mvc.RequestHeader, flash: Flash)
+@(user: models.User)(implicit request: RequestHeader, messages: Messages, webjarAssets: WebJarAssets, flash: Flash)
 
 @import views.html.elements.flashMessages
 @import views.html.elements.handlebars
 
-@main("Clustered chat") {
-<div class='container'>
-  @flashMessages(flash)
+@main("En-Taku Chat", Some(user)) {
+<div class='chat-container'>
+  <style type='text/css'>
+    @* ↓スクロールさせない設定↓ *@
+    <!--
+        body{
+          overflow-y: hidden;
+          height: 100%;
+        }
+      -->
+    @* ↑スクロールさせない設定↑ *@
+  </style>
   <div class='row'>
     <div class='col-xs-4'>
       <div id='topics-panel'>
@@ -37,8 +46,8 @@
           <div id='messages'>
           </div>
           @handlebars("message-on-left-template") {
-          <p class='conversation_comment bold'>{{{user}}}</p>
-          <p class='conversation_comment'>{{{message}}}</p>
+            <p class='conversation_comment bold'>{{{user}}}</p>
+            <p class='conversation_comment'>{{{message}}}</p>
           }
         </div>
       </div>  
@@ -56,13 +65,13 @@
   </div>
   <div class='row'>
     <div class='col-sm-10'>
-      User : @user
+      User : @user.userName.getOrElse("Error: Nameless")
     </div>
     <div class='col-sm-2'>
       <a class='button-form-link' href='#'>
         <span class='glyphicon glyphicon-log-out'></span> Leave chat
       </a>
-      @helper.form(routes.Chat.leave, 'class -> "button-form"){
+      @helper.form(routes.ChatController.leave, 'class -> "button-form"){
       }
     </div>
   </div>

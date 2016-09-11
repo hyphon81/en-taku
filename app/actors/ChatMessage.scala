@@ -1,6 +1,6 @@
 package actors
 
-import play.api.libs.json.{Writes, JsPath, JsValue, JsString, JsObject, Json}
+import play.api.libs.json.{ Writes, JsPath, JsValue, JsString, JsObject, Json }
 import play.api.libs.functional.syntax._
 import play.twirl.api.HtmlFormat
 

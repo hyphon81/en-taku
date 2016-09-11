@@ -2,9 +2,9 @@ package actors
 
 import actors.UserSocket.Message
 import actors.UserSocket.Message.messageReads
-import akka.actor.{Actor, ActorLogging, ActorRef, Props}
+import akka.actor.{ Actor, ActorLogging, ActorRef, Props }
 import akka.event.LoggingReceive
-import play.api.libs.json.{Writes, JsPath, JsValue, JsString, JsObject, JsArray, Json}
+import play.api.libs.json.{ Writes, JsPath, JsValue, JsString, JsObject, JsArray, Json }
 import play.api.libs.functional.syntax._
 
 import scala.xml.Utility
@@ -108,7 +108,7 @@ class UserSocket(uid: String, out: ActorRef) extends Actor with ActorLogging {
     case c @ Changed(key) if key == topicsKey =>
       val data = c.get[GSet[String]](topicsKey).elements.toSeq
       out ! Json.toJson(TopicsListMessage(data))
-      //when add a topic
+    //when add a topic
 
     case c @ Changed(LWWRegisterKey(topic)) =>
       for {
@@ -120,7 +120,7 @@ class UserSocket(uid: String, out: ActorRef) extends Actor with ActorLogging {
             out ! Json.toJson(chatMessage)
         }
         // when send a message
-        
+
       }
     case g @ GetSuccess(GSetKey(topic), req) =>
       for {
@@ -134,7 +134,7 @@ class UserSocket(uid: String, out: ActorRef) extends Actor with ActorLogging {
       }
       // after recieve message list when subscribe a topic
       showLoginMessage(topic)
-      
+
     case g @ NotFound(GSetKey(topic), req) =>
       for {
         subscribedTopic <- lastSubscribed if subscribedTopic.equals(topic)
@@ -152,7 +152,7 @@ class UserSocket(uid: String, out: ActorRef) extends Actor with ActorLogging {
         initialHistory = Some(Set.empty[ChatMessage])
         replicator ! Subscribe(key = topicMsgKey(topic), self)
       }
-    case JsString(topicName) => 
+    case JsString(topicName) =>
       replicator ! Update(topicsKey, GSet.empty[String], WriteLocal) {
         set => set + topicName
       }
@@ -171,16 +171,17 @@ class UserSocket(uid: String, out: ActorRef) extends Actor with ActorLogging {
         case "message" =>
           js.validate[Message](messageReads)
             .map(message => (message.topic, Utility.escape(message.msg)))
-            .foreach { case (topic, msg) => 
-              val chatMessage = ChatMessage(topic, uid, msg, new java.util.Date())
-              replicator ! Update(GSetKey[ChatMessage](topic), GSet.empty[ChatMessage], WriteLocal) {
-                _ + chatMessage
-              }
-              replicator ! Update(topicMsgKey(topic), LWWRegister[ChatMessage](null), WriteLocal) {
-                reg => reg.withValue(chatMessage)
-              }
-              replicator ! FlushChanges
-              context.actorSelection("dice") ! chatMessage
+            .foreach {
+              case (topic, msg) =>
+                val chatMessage = ChatMessage(topic, uid, msg, new java.util.Date())
+                replicator ! Update(GSetKey[ChatMessage](topic), GSet.empty[ChatMessage], WriteLocal) {
+                  _ + chatMessage
+                }
+                replicator ! Update(topicMsgKey(topic), LWWRegister[ChatMessage](null), WriteLocal) {
+                  reg => reg.withValue(chatMessage)
+                }
+                replicator ! FlushChanges
+                context.actorSelection("dice") ! chatMessage
             }
       }
   }

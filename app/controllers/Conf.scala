@@ -1,6 +1,6 @@
 package controllers
 
-import javax.inject.{Inject, Provider}
+import javax.inject.{ Inject, Provider }
 
 import play.api.Configuration
 

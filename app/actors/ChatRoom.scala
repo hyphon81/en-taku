@@ -1,7 +1,7 @@
 package actors
 
 import akka.actor._
-import akka.cluster.ClusterEvent.{InitialStateAsEvents, MemberEvent, MemberRemoved, MemberUp, UnreachableMember}
+import akka.cluster.ClusterEvent.{ InitialStateAsEvents, MemberEvent, MemberRemoved, MemberUp, UnreachableMember }
 import akka.cluster.Cluster
 import akka.event.LoggingReceive
 
