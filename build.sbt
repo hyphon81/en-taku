@@ -13,8 +13,6 @@ resolvers += Resolver.jcenterRepo
 
 routesGenerator := InjectedRoutesGenerator
 
-routesImport += "utils.route.Binders._"
-
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-distributed-data-experimental" % akkaVersion,
   "com.typesafe.akka" %% "akka-cluster" % akkaVersion,
