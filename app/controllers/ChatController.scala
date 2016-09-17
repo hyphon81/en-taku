@@ -42,8 +42,10 @@ class ChatController @Inject() (
 
   val chatRoom = system.actorOf(Props[ChatRoom], "chat-room")
 
-  def leave = silhouette.SecuredAction { implicit request =>
-    Redirect(routes.ApplicationController.index()).withNewSession.flashing("success" -> "See you soon!")
+  def leave = silhouette.SecuredAction.async { implicit request =>
+    Future.successful(
+      Redirect(routes.ApplicationController.index()).withNewSession.flashing("success" -> "See you soon!")
+    )
   }
 
   def chat = silhouette.SecuredAction.async { implicit request =>

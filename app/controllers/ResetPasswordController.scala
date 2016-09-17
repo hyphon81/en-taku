@@ -8,7 +8,7 @@ import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
 import com.mohiva.play.silhouette.api.util.{ PasswordHasherRegistry, PasswordInfo }
 import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
 import forms.ResetPasswordForm
-import models.services.{ AuthTokenService, UserService }
+import models.services.{ AuthTokenService, UserService, LoginInfoService }
 import play.api.i18n.{ I18nSupport, Messages, MessagesApi }
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.mvc.Controller
@@ -31,6 +31,7 @@ class ResetPasswordController @Inject() (
   val messagesApi: MessagesApi,
   silhouette: Silhouette[DefaultEnv],
   userService: UserService,
+  loginInfoService: LoginInfoService,
   authInfoRepository: AuthInfoRepository,
   passwordHasherRegistry: PasswordHasherRegistry,
   authTokenService: AuthTokenService,
@@ -63,11 +64,15 @@ class ResetPasswordController @Inject() (
         ResetPasswordForm.form.bindFromRequest.fold(
           form => Future.successful(BadRequest(views.html.resetPassword(form, token))),
           password => userService.retrieve(authToken.accountId).flatMap {
-            case Some(user) if user.loginInfo.providerID == CredentialsProvider.ID =>
+            case Some(user) if userService.hasCredentialLoginInfo(user) =>
               val passwordInfo = passwordHasherRegistry.current.hash(password)
-              authInfoRepository.update[PasswordInfo](user.loginInfo, passwordInfo).map { _ =>
+              val loginInfo = loginInfoService.getCredentialLoginInfo(user).get
+              authInfoRepository.update[PasswordInfo](loginInfo, passwordInfo).map { _ =>
+
                 Redirect(routes.SignInController.view()).flashing("success" -> Messages("password.reset"))
+
               }
+
             case _ => Future.successful(Redirect(routes.SignInController.view()).flashing("error" -> Messages("invalid.reset.link")))
           }
         )

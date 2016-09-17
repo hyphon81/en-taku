@@ -22,6 +22,32 @@ trait UserService extends IdentityService[User] {
   def retrieve(id: UUID): Future[Option[User]]
 
   /**
+   * Retrieves a user that matches the specified ID.
+   *
+   * @param accountName The account name to retrieve a user.
+   * @return The retrieved user or None if no user could be retrieved for the given account name.
+   */
+  def retrieveByAccountName(accountName: String): Future[Option[User]]
+
+  /**
+   * Retrieves a user that matches the specified ID.
+   *
+   * @param email The email address to retrieve a user.
+   * @return The retrieved user or None if no user could be retrieved for the given email address.
+   */
+  def retrieveByEmail(email: String): Future[Option[User]]
+
+  def hasCredentialLoginInfo(user: User): Boolean
+
+  def hasTwitterLoginInfo(user: User): Boolean
+
+  def hasGoogleLoginInfo(user: User): Boolean
+
+  def hasFacebookLoginInfo(user: User): Boolean
+
+  def hasClefLoginInfo(user: User): Boolean
+
+  /**
    * Saves a user.
    *
    * @param user The user to save.

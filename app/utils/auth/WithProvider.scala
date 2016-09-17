@@ -28,6 +28,6 @@ case class WithProvider[A <: Authenticator](provider: String) extends Authorizat
     request: Request[B]
   ): Future[Boolean] = {
 
-    Future.successful(user.loginInfo.providerID == provider)
+    Future.successful(user.loginInfos.exists(loginInfo => loginInfo.providerID == provider))
   }
 }

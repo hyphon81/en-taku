@@ -7,6 +7,8 @@ import slick.lifted.ProvenShape.proveShapeOf
 import java.util.UUID
 import utils.UUIDHelper
 
+import java.sql.Date
+
 trait DBTableDefinitions {
   protected val driver: JdbcProfile
   import driver.api._
@@ -17,8 +19,10 @@ trait DBTableDefinitions {
     email: Option[String],
     userName: Option[String],
     avatarURL: Option[String],
+    birthDay: Option[Date],
     activated: Boolean,
-    isAdmin: Boolean
+    isAdmin: Boolean,
+    changeableAccountName: Boolean
   )
 
   class Users(tag: Tag) extends Table[DBUser](tag, "en_taku_user") {
@@ -27,9 +31,22 @@ trait DBTableDefinitions {
     def email = column[Option[String]]("email")
     def userName = column[Option[String]]("userName")
     def avatarURL = column[Option[String]]("avatarURL")
+    def birthDay = column[Option[Date]]("birthDay")
     def activated = column[Boolean]("activated")
     def isAdmin = column[Boolean]("isAdmin")
-    def * = (id, accountName, email, userName, avatarURL, activated, isAdmin) <> (DBUser.tupled, DBUser.unapply)
+    def changeableAccountName = column[Boolean]("changeableAccountName")
+    def * =
+      (
+        id,
+        accountName,
+        email,
+        userName,
+        avatarURL,
+        birthDay,
+        activated,
+        isAdmin,
+        changeableAccountName
+      ) <> (DBUser.tupled, DBUser.unapply)
   }
 
   case class DBLoginInfo(

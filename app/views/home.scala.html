@@ -1,25 +1,46 @@
 @(user: models.User)(implicit request: RequestHeader, messages: Messages, webJarAssets: WebJarAssets)
 
+@import play.api.Configuration
+@import com.typesafe.config.ConfigFactory
+
 @main(Messages("home.title"), Some(user)) {
-    <div class="user col-md-6 col-md-offset-3">
-        <div class="row">
-            <hr class="col-md-12" />
-            <h4 class="col-md-8">@Messages("welcome.signed.in")</h4>
-            <div class="col-md-4 text-right">
-                <img src="@user.avatarURL.getOrElse(routes.Assets.versioned("images/silhouette.png"))" height="40px" />
+    <div 'ads-top col-md-6 col-md-offset-6'>
+      <div class='row' style='text-align:center; margin-bottom:1em;'>
+      <!--
+        .img-responsive-overwrite{
+          margin: 0 auto;
+        }
+        -->
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- bar-ad -->
+        <ins class='adsbygoogle'
+          style='display:inline-block;width:728px;height:90px'
+          data-ad-client='@Configuration(ConfigFactory.load()).getString("googleAdsense.adClient").getOrElse("XX-XXX-XXXXXXXXXXXXXXXX")'
+          data-ad-slot='@Configuration(ConfigFactory.load()).getString("googleAdsense.homeTopBar").getOrElse("XXXXXXXXXX")'></ins>
+        <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+    </div>
+    <div class='user col-md-6 col-md-offset-3'>
+        <div class='row'>
+            <hr class='col-md-12' />
+            <h4 class='col-md-8'>@Messages("welcome.signed.in")</h4>
+            <div class='col-md-4 text-right'>
+                <img src='@user.avatarURL.getOrElse(routes.Assets.versioned("images/silhouette.png"))' height='40px' />
             </div>
-            <hr class="col-md-12" />
+            <hr class='col-md-12' />
         </div>
-        <div class="row data">
-            <div class="col-md-12">
-                <div class="row">
-                    <p class="col-md-6"><strong>@Messages("first.name"):</strong></p><p class="col-md-6">@user.accountName</p>
+        <div class='row data'>
+            <div class='col-md-12'>
+                <div class='row'>
+                    <p class='col-md-6'><strong>@Messages("account.name"):</strong></p><p class='col-md-6'>@user.accountName</p>
                 </div>
-                <div class="row">
-                    <p class="col-md-6"><strong>@Messages("email"):</strong></p><p class="col-md-6">@user.email.getOrElse("None")</p>
+                <div class='row'>
+                    <p class='col-md-6'><strong>@Messages("email"):</strong></p><p class='col-md-6'>@user.email.getOrElse("None")</p>
                 </div>
-                <div class="row">
-                    <p class="col-md-6"><strong>@Messages("email"):</strong></p><p class="col-md-6">@user.userName.getOrElse("None")</p>
+                <div class='row'>
+                    <p class='col-md-6'><strong>@Messages("user.name"):</strong></p><p class='col-md-6'>@user.userName.getOrElse("None")</p>
                 </div>
             </div>
         </div>

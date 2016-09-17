@@ -16,6 +16,8 @@
   <logger name="application" level="DEBUG" />
   <logger name="akka" level="OFF" />
 
+  <logger name="slick.jdbc" level="DEBUG" /> 
+
   <root level="ERROR">
     <appender-ref ref="STDOUT" />
   </root>

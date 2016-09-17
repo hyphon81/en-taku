@@ -3,22 +3,25 @@
 # --- !Ups
 create table `en_taku_user` (
   `accountId` binary(16) not null primary key,
-  `accountName` varchar(100) not null unique,
+  `accountName` varchar(191) not null unique,
   `email` varchar(254),
-  `userName` varchar(254),
+  `userName` varchar(191),
   `avatarURL` varchar(254),
+  `birthDay` date,
   `activated` boolean not null,
-  `isAdmin` boolean not null
+  `isAdmin` boolean not null,
+  `changeableAccountName` boolean not null
 );
 
 create table `logininfo` (
   `id` bigint not null auto_increment primary key,
-  `providerID` varchar(254) not null,
-  `providerKey` varchar(254) not null
+  `providerID` varchar(191) not null,
+  `providerKey` varchar(191) not null,
+  unique(`providerID`, `providerKey`)
 );
 
 create table `userlogininfo` (
-  `accountId` binary(16) not null unique,
+  `accountId` binary(16) not null,
   `loginInfoId` bigint not null unique
 );
 

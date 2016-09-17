@@ -13,6 +13,8 @@ import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.language.postfixOps
 
+import play.api.Logger
+
 /**
  * Handles actions to auth tokens.
  *

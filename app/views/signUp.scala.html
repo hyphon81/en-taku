@@ -7,10 +7,11 @@
         <legend>@Messages("sign.up.account")</legend>
         @helper.form(action = routes.SignUpController.submit()) {
             @helper.CSRF.formField
-            @b3.text(signUpForm("firstName"), '_hiddenLabel -> Messages("first.name"), 'placeholder -> Messages("first.name"), 'class -> "form-control input-lg")
-            @b3.text(signUpForm("lastName"), '_hiddenLabel -> Messages("last.name"), 'placeholder -> Messages("last.name"), 'class -> "form-control input-lg")
+            @b3.text(signUpForm("accountName"), '_hiddenLabel -> Messages("account.name"), 'placeholder -> Messages("account.name"), 'class -> "form-control input-lg")
+            @b3.text(signUpForm("userName"), '_hiddenLabel -> Messages("user.name"), 'placeholder -> Messages("user.name"), 'class -> "form-control input-lg")
             @b3.text(signUpForm("email"), '_hiddenLabel -> Messages("email"), 'placeholder -> Messages("email"), 'class -> "form-control input-lg")
-            @passwordStrength(signUpForm("password"), '_hiddenLabel -> Messages("password"), 'placeholder -> Messages("password"), 'class -> "form-control input-lg")
+            @passwordStrength(signUpForm("password.main"), '_hiddenLabel -> Messages("password"), 'placeholder -> Messages("password"), 'class -> "form-control input-lg", 'required -> "required", '_error -> signUpForm.error("password"))
+            @b3.password(signUpForm("password.confirm"), '_hiddenLabel -> Messages("confirm.password"), 'placeholder -> Messages("confirm.password"), 'class -> "form-control input-lg", '_error -> signUpForm.error("password"))
             <div class="form-group">
                 <div>
                     <button id="submit" type="submit" value="submit" class="btn btn-lg btn-primary btn-block">@Messages("sign.up")</button>

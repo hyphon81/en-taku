@@ -21,7 +21,10 @@
   <logger name="akka.cluster" level="WARN" />
   <logger name="akka.serialization" level="WARN" />
 
-  <root level="ERROR">
+  <logger name="slick" level="WARN" /> 
+  <logger name="slick.jdbc" level="WARN" /> 
+
+  <root level="WARN">
     <appender-ref ref="STDOUT" />
   </root>
 

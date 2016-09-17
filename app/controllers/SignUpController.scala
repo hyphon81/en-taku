@@ -16,8 +16,14 @@ import play.api.libs.concurrent.Execution.Implicits._
 import play.api.libs.mailer.{ Email, MailerClient }
 import play.api.mvc.Controller
 import utils.auth.DefaultEnv
+import play.api.data.Form
+import play.api.data.Forms._
+import scala.concurrent._
+import scala.concurrent.duration.Duration
 
 import scala.concurrent.Future
+
+import play.api.Logger
 
 /**
  * The `Sign Up` controller.
@@ -46,12 +52,34 @@ class SignUpController @Inject() (
   extends Controller with I18nSupport {
 
   /**
+   * A play framework form.
+   */
+  val form = Form(
+    mapping(
+      "accountName" -> nonEmptyText(maxLength = 191).verifying(
+        Messages("error.this.name.has.been.used"),
+        accountName => Await.result(
+          userService.retrieveByAccountName(accountName), Duration.Inf
+        ).getOrElse(None) == None
+      ),
+      "userName" -> nonEmptyText(maxLength = 191),
+      "email" -> email,
+      "password" -> tuple(
+        "main" -> nonEmptyText(minLength = 8, maxLength = 191),
+        "confirm" -> nonEmptyText(maxLength = 191)
+      ).verifying(
+          Messages("error.password.do.not.match"), password => password._1 == password._2
+        )
+    )(SignUpForm.Data.apply)(SignUpForm.Data.unapply)
+  )
+
+  /**
    * Views the `Sign Up` page.
    *
    * @return The result to display.
    */
   def view = silhouette.UnsecuredAction.async { implicit request =>
-    Future.successful(Ok(views.html.signUp(SignUpForm.form)))
+    Future.successful(Ok(views.html.signUp(form)))
   }
 
   /**
@@ -60,7 +88,7 @@ class SignUpController @Inject() (
    * @return The result to display.
    */
   def submit = silhouette.UnsecuredAction.async { implicit request =>
-    SignUpForm.form.bindFromRequest.fold(
+    form.bindFromRequest.fold(
       form => Future.successful(BadRequest(views.html.signUp(form))),
       data => {
         val result = Redirect(routes.SignUpController.view()).flashing("info" -> Messages("sign.up.email.sent", data.email))
@@ -78,34 +106,59 @@ class SignUpController @Inject() (
 
             Future.successful(result)
           case None =>
-            val authInfo = passwordHasherRegistry.current.hash(data.password)
-            val user = User(
-              accountId = UUID.randomUUID(),
-              loginInfo = loginInfo,
-              accountName = data.accountName,
-              email = Some(data.email),
-              userName = Some(data.userName),
-              avatarURL = None,
-              activated = false,
-              isAdmin = false
-            )
-            for {
-              avatar <- avatarService.retrieveURL(data.email)
-              user <- userService.save(user.copy(avatarURL = avatar))
-              authInfo <- authInfoRepository.add(loginInfo, authInfo)
-              authToken <- authTokenService.create(user.accountId)
-            } yield {
-              val url = routes.ActivateAccountController.activate(authToken.id).absoluteURL()
-              mailerClient.send(Email(
-                subject = Messages("email.sign.up.subject"),
-                from = Messages("email.from"),
-                to = Seq(data.email),
-                bodyText = Some(views.txt.emails.signUp(user, url).body),
-                bodyHtml = Some(views.html.emails.signUp(user, url).body)
-              ))
+            val authInfo = passwordHasherRegistry.current.hash(data.password._1)
+            userService.retrieveByEmail(data.email).flatMap {
+              case Some(user) =>
+                for {
+                  user <- userService.save(user.copy(
+                    loginInfos = user.loginInfos :+ loginInfo
+                  ))
+                  authInfo <- authInfoRepository.add(loginInfo, authInfo)
+                  authToken <- authTokenService.create(user.accountId)
+                } yield {
+                  val url = routes.ActivateAccountController.activate(authToken.id).absoluteURL()
+                  mailerClient.send(Email(
+                    subject = Messages("email.sign.up.subject"),
+                    from = Messages("email.from"),
+                    to = Seq(data.email),
+                    bodyText = Some(views.txt.emails.signUp(user, url).body),
+                    bodyHtml = Some(views.html.emails.signUp(user, url).body)
+                  ))
 
-              silhouette.env.eventBus.publish(SignUpEvent(user, request))
-              result
+                  silhouette.env.eventBus.publish(SignUpEvent(user, request))
+                  result
+                }
+              case None =>
+                val user = User(
+                  accountId = UUID.randomUUID(),
+                  loginInfos = Seq(loginInfo),
+                  accountName = data.accountName,
+                  email = Some(data.email),
+                  userName = Some(data.userName),
+                  avatarURL = None,
+                  birthDay = None,
+                  activated = false,
+                  isAdmin = false,
+                  changeableAccountName = false
+                )
+                for {
+                  avatar <- avatarService.retrieveURL(data.email)
+                  user <- userService.save(user.copy(avatarURL = avatar))
+                  authInfo <- authInfoRepository.add(loginInfo, authInfo)
+                  authToken <- authTokenService.create(user.accountId)
+                } yield {
+                  val url = routes.ActivateAccountController.activate(authToken.id).absoluteURL()
+                  mailerClient.send(Email(
+                    subject = Messages("email.sign.up.subject"),
+                    from = Messages("email.from"),
+                    to = Seq(data.email),
+                    bodyText = Some(views.txt.emails.signUp(user, url).body),
+                    bodyHtml = Some(views.html.emails.signUp(user, url).body)
+                  ))
+
+                  silhouette.env.eventBus.publish(SignUpEvent(user, request))
+                  result
+                }
             }
         }
       }

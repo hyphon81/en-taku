@@ -9,14 +9,20 @@ import models.User
 import models.daos.UserDAO
 import play.api.libs.concurrent.Execution.Implicits._
 
+import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
+
 import scala.concurrent.Future
+
+import play.api.Logger
 
 /**
  * Handles actions to users.
  *
  * @param userDAO The user DAO implementation.
  */
-class UserServiceImpl @Inject() (userDAO: UserDAO) extends UserService {
+class UserServiceImpl @Inject() (
+  userDAO: UserDAO
+) extends UserService {
 
   /**
    * Retrieves a user that matches the specified ID.
@@ -33,6 +39,43 @@ class UserServiceImpl @Inject() (userDAO: UserDAO) extends UserService {
    * @return The retrieved user or None if no user could be retrieved for the given login info.
    */
   def retrieve(loginInfo: LoginInfo): Future[Option[User]] = userDAO.find(loginInfo)
+
+  /**
+   * Retrieves a user that matches the specified ID.
+   *
+   * @param accountName The account name to retrieve a user.
+   * @return The retrieved user or None if no user could be retrieved for the given account name.
+   */
+  def retrieveByAccountName(accountName: String) =
+    userDAO.findByAccountName(accountName)
+
+  /**
+   * Retrieves a user that matches the specified ID.
+   *
+   * @param email The email address to retrieve a user.
+   * @return The retrieved user or None if no user could be retrieved for the given email address.
+   */
+  def retrieveByEmail(email: String) = userDAO.findByEmail(email)
+
+  def hasCredentialLoginInfo(user: User) = {
+    user.loginInfos.exists(loginInfo => loginInfo.providerID == CredentialsProvider.ID)
+  }
+
+  def hasTwitterLoginInfo(user: User) = {
+    user.loginInfos.exists(loginInfo => loginInfo.providerID == "twitter")
+  }
+
+  def hasGoogleLoginInfo(user: User) = {
+    user.loginInfos.exists(loginInfo => loginInfo.providerID == "google")
+  }
+
+  def hasFacebookLoginInfo(user: User) = {
+    user.loginInfos.exists(loginInfo => loginInfo.providerID == "facebook")
+  }
+
+  def hasClefLoginInfo(user: User) = {
+    user.loginInfos.exists(loginInfo => loginInfo.providerID == "clef")
+  }
 
   /**
    * Saves a user.
@@ -53,23 +96,40 @@ class UserServiceImpl @Inject() (userDAO: UserDAO) extends UserService {
   def save(profile: CommonSocialProfile) = {
     userDAO.find(profile.loginInfo).flatMap {
       case Some(user) => // Update user with profile
-        userDAO.save(user.copy(
-          accountName = "Nothing",
-          email = profile.email,
-          userName = profile.fullName, // memo: profile is from SocialAuth
-          avatarURL = profile.avatarURL
-        ))
-      case None => // Insert a new user
-        userDAO.save(User(
-          accountId = UUID.randomUUID(),
-          loginInfo = profile.loginInfo,
-          accountName = "Nothing2",
-          email = profile.email,
-          userName = profile.fullName,
-          avatarURL = profile.avatarURL,
-          activated = true,
-          isAdmin = false
-        ))
+        userDAO.save(user)
+
+      case None =>
+        def insertNewUser = {
+          val uuid = UUID.randomUUID()
+          userDAO.save(User(
+            accountId = uuid,
+            loginInfos = Seq(profile.loginInfo),
+            accountName = uuid.toString(),
+            email = profile.email,
+            userName = profile.fullName,
+            avatarURL = profile.avatarURL,
+            birthDay = None,
+            activated = false,
+            isAdmin = false,
+            changeableAccountName = true
+          ))
+        }
+
+        profile.email match {
+          case Some(email) =>
+            userDAO.findByEmail(email).flatMap {
+              case Some(user) =>
+                userDAO.save(user.copy(
+                  loginInfos = user.loginInfos :+ profile.loginInfo
+                ))
+              case None =>
+                insertNewUser
+            }
+
+          case None =>
+            insertNewUser
+        }
+
     }
   }
 }

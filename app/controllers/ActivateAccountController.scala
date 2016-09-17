@@ -16,6 +16,8 @@ import utils.auth.DefaultEnv
 import scala.concurrent.Future
 import scala.language.postfixOps
 
+import play.api.Logger
+
 /**
  * The `Activate Account` controller.
  *
@@ -74,13 +76,15 @@ class ActivateAccountController @Inject() (
   def activate(token: UUID) = silhouette.UnsecuredAction.async { implicit request =>
     authTokenService.validate(token).flatMap {
       case Some(authToken) => userService.retrieve(authToken.accountId).flatMap {
-        case Some(user) if user.loginInfo.providerID == CredentialsProvider.ID =>
+        case Some(user) if userService.hasCredentialLoginInfo(user) =>
           userService.save(user.copy(activated = true)).map { _ =>
             Redirect(routes.SignInController.view()).flashing("success" -> Messages("account.activated"))
           }
-        case _ => Future.successful(Redirect(routes.SignInController.view()).flashing("error" -> Messages("invalid.activation.link")))
+        case _ =>
+          Future.successful(Redirect(routes.SignInController.view()).flashing("error" -> Messages("invalid.activation.link")))
       }
-      case None => Future.successful(Redirect(routes.SignInController.view()).flashing("error" -> Messages("invalid.activation.link")))
+      case None =>
+        Future.successful(Redirect(routes.SignInController.view()).flashing("error" -> Messages("invalid.activation.link")))
     }
   }
 }

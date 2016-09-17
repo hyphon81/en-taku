@@ -1,16 +1,20 @@
 error.email = Valid email required
+error.password.do.not.match = Password do not match
+error.this.name.has.been.used = This name has been already used
 error.required = This field is required
 invalid.credentials = Invalid credentials!
 access.denied = Access denied!
 could.not.authenticate = Could not authenticate with social provider! Please try again!
 
-home.title = Silhouette - Home
-sign.up.title = Silhouette - Sign Up
-sign.in.title = Silhouette - Sign In
-forgot.password.title = Silhouette - Forgot Password
-reset.password.title = Silhouette - Reset Password
-change.password.title = Silhouette - Change Password
-activate.account.title = Silhouette - Activate Account
+home.title = En-Taku - Home
+sign.up.title = En-Taku - Sign Up
+sign.in.title = En-Taku - Sign In
+forgot.password.title = En-Taku - Forgot Password
+reset.password.title = En-Taku - Reset Password
+change.password.title = En-Taku - Change Password
+activate.account.title = En-Taku - Activate Account
+terms.of.use = Terms of use
+privacy.policy = Privacy policy
 
 toggle.navigation = Toggle navigation
 welcome.signed.in = Welcome, you are now signed in!
@@ -18,15 +22,17 @@ welcome.signed.in = Welcome, you are now signed in!
 sign.up.account = Sign up for a new account
 sign.in.credentials = Sign in with your credentials
 
+toppage.notification = Notification: En-Taku is developping now
+
 error = Error!
 info = Info!
 success = Success!
 home = Home
-first.name = First name
-last.name = Last name
-full.name = Full name
+account.name = Account name
+user.name = User name
 email = Email
 password = Password
+confirm.password = Confirm password
 send = Send
 change = Change
 reset = Reset
@@ -68,16 +74,12 @@ password.changed = Your password has been changed.
 google = Google
 facebook = Facebook
 twitter = Twitter
-vk = VK
-xing = Xing
-yahoo = Yahoo
 
 ##########
 # Emails
 ##########
 
-#email.from = Silhouette <noreply@mohiva.com>
-email.from = Silhouette <noreply@en-taku.com>
+email.from = En-Taku <noreply@en-taku.com>
 
 # Sign Up
 email.sign.up.subject = Welcome

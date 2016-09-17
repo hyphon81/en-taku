@@ -1,0 +1,106 @@
+error.email = メールアドレスを入力して下さい
+error.password.do.not.match = パスワードが一致しません
+error.this.name.has.been.used = この名前は既に使われています
+error.required = 未入力のフィールドがあります
+invalid.credentials = メールアドレスまたはパスワードが違います!
+access.denied = アクセスが拒否されました!
+could.not.authenticate = プロバイダからの認証ができませんでした もう一度試してみてください
+
+home.title = En-Taku - ホーム
+sign.up.title = En-Taku - アカウント登録
+sign.in.title = En-Taku - ログイン
+forgot.password.title = En-Taku - パスワード紛失
+reset.password.title = En-Taku - パスワードリセット
+change.password.title = En-Taku - パスワード変更
+activate.account.title = En-Taku - アカウント有効化
+terms.of.use = 利用規約
+privacy.policy = プライバシーポリシ
+
+toggle.navigation = Toggle navigation
+welcome.signed.in = ようこそ!
+
+sign.up.account = アカウント登録をしよう
+sign.in.credentials = 利用するにはログインしてね
+
+toppage.notification = お知らせ: En-Takuは現在開発中です
+
+error = Error!
+info = Info!
+success = Success!
+home = ホーム
+account.name = アカウント名
+user.name = ユーザ名
+email = Email
+password = パスワード
+confirm.password = パスワードの確認
+send = 送信
+change = 変更
+reset = リセット
+sign.up = アカウント登録
+sign.in = ログイン
+sign.out = ログアウト
+sign.in.now = ログインはここから。
+sign.up.now = アカウント登録はここから。
+already.a.member = もうアカウントを持っている?
+not.a.member = まだアカウントを持っていない?
+forgot.your.password = パスワードを忘れた?
+forgot.password = パスワードを忘れた?
+reset.password = パスワードリセット
+change.password = パスワード変更
+activate.account = アカウント有効化
+current.password = 現在のパスワード
+new.password = 新しいパスワード
+
+remember.me = ログイン情報を覚えておく?
+or.use.social = SNSのアカウントを持っていれば、それでログインできるよ:
+forgot.password.info = 登録したメールアドレスを入れてね。パスワードリセットのためのメールを送るよ。
+strong.password.info = 強力なパスワードは英数字、記号をバラバラに含むよ。
+current.password.invalid = 入力されたパスワードがおかしいよ。正しいパスワードを入れてね。
+activate.account.text1 = まだログインはできないよ。このメールアドレスにアカウント有効化のメールを送ったよ。:
+activate.account.text2 = アカウント有効化のためにメールの説明に従ってね。
+activate.account.text3 = <a href="{0}">ここをクリック</a>して、もう一度アカウント有効化のメールを送信してね。
+
+sign.up.email.sent = {0}にアカウント有効化のためのメールを送ったよ。アカウント有効化のためにメールの説明に従ってね。メールが届かないときは、迷惑メールフォルダもチェックしてみてね。それでもなければ、入力したアドレスが正しいことを確認した上で、ログインの操作をしてもう一度アカウント有効化のメールを送信してね。
+activation.email.sent = {0}にアカウント有効化のためのメールを送ったよ。届くまでに数分かかることもあるよ。迷惑メールフォルダのチェックもしてみてね。
+reset.email.sent = 登録されたメールアドレスが正しければ、パスワードリセットのためのメールが届くよ。5分以内にメールが届かない場合は、入力したメールアドレスを確認した上で、もう一度パスワードリセットの操作をしてね。
+
+invalid.activation.link = このリンクはもう有効じゃないよ! ログインの操作をしてもう一度アカウント有効化のためのメールを送信してね。
+invalid.reset.link = このリンクはもう有効じゃないよ! もう一度パスワードリセットの操作をしてね。
+
+password.reset = パスワードをリセットしたよ。新しいパスワードでログインできるよ。
+account.activated = アカウントの有効化ができたよ! さあ、ログインして遊ぼう!
+password.changed = パスワードを変更したよ。
+
+google = Google
+facebook = Facebook
+twitter = Twitter
+
+##########
+# Emails
+##########
+
+email.from = En-Taku <noreply@en-taku.com>
+
+# Sign Up
+email.sign.up.subject = アカウントの有効化
+email.sign.up.hello = {0} 様、
+email.sign.up.html.text = En-Taku側でアカウント有効化の準備ができました。<br> <a href="{0}">ここをクリック</a>して、アカウント有効化の処理を完了してください。
+email.sign.up.txt.text = En-Taku側でアカウント有効化の準備ができました。リンクをクリックして、アカウント有効化の処理を完了してください: {0}
+
+# Already Signed Up
+email.already.signed.up.subject = アカウントは既に登録されています
+email.already.signed.up.hello = {0} 様、
+email.already.signed.up.html.text = アカウントは既に登録されています。<a href="{0}">ここをクリック</a>してログインの処理を行なってください。
+email.already.signed.up.txt.text = アカウントは既に登録されています。リンクをクリックしてログインの処理を行なってください。: {0}
+
+# Reset Password
+email.reset.password.subject = パスワードのリセット
+email.reset.password.hello = {0} 様、
+email.reset.password.html.text = <a href="{0}">ここをクリック</a>してパスワードのリセットの処理を行なってください。
+email.reset.password.txt.text = リンクをクリックしてパスワードのリセットの処理を行なってください。: {0}
+
+# Activate Account
+email.activate.account.subject = アカウントの有効化
+email.activate.account.hello = {0} 様、
+email.activate.account.html.text = En-Taku側でアカウント有効化の準備ができました。<br> <a href="{0}">ここをクリック</a>して、アカウント有効化の処理を完了してください。
+email.activate.account.txt.text = En-Taku側でアカウント有効化の準備ができました。リンクをクリックして、アカウント有効化の処理を完了してください: {0}
