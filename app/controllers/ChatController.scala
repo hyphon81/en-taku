@@ -35,7 +35,6 @@ class ChatController @Inject() (
   socialProviderRegistry: SocialProviderRegistry,
   implicit val webJarAssets: WebJarAssets
 ) extends Controller with I18nSupport {
-  val User = "user"
 
   implicit val implicitMaterializer: Materializer = mat
   implicit val implicitActorSystem: ActorSystem = system
@@ -44,12 +43,13 @@ class ChatController @Inject() (
 
   def leave = silhouette.SecuredAction.async { implicit request =>
     Future.successful(
-      Redirect(routes.ApplicationController.index()).withNewSession.flashing("success" -> "See you soon!")
+      Redirect(routes.ApplicationController.index()).withNewSession.flashing("success" -> Messages("see.you.soon"))
     )
   }
 
   def chat = silhouette.SecuredAction.async { implicit request =>
-    Future.successful(Ok(views.html.chat(request.identity)))
+    val userName = request.identity.accountName + ":" + request.identity.userName.getOrElse(Messages("none.name"))
+    Future.successful(Ok(views.html.chat(request.identity, userName)))
   }
 
   def socket = WebSocket.acceptOrResult[JsValue, JsValue] { implicit request =>

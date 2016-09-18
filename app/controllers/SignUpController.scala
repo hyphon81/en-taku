@@ -21,8 +21,6 @@ import play.api.data.Forms._
 import scala.concurrent._
 import scala.concurrent.duration.Duration
 
-import scala.concurrent.Future
-
 import play.api.Logger
 
 /**
@@ -137,6 +135,11 @@ class SignUpController @Inject() (
                   userName = Some(data.userName),
                   avatarURL = None,
                   birthDay = None,
+                  openBirthDay = 0,
+                  comment = None,
+                  residence = None,
+                  openResidence = 0,
+                  openHistory = 3,
                   activated = false,
                   isAdmin = false,
                   changeableAccountName = false

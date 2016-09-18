@@ -1,0 +1,287 @@
+@(user: models.User, profileForm: Form[forms.ProfileForm.Data], openOptions: Seq[(String, String)])(implicit request: RequestHeader, messages: Messages, webJarAssets: WebJarAssets)
+
+@import play.api.Configuration
+@import com.typesafe.config.ConfigFactory
+
+@import b3.inline.fieldConstructor
+@import helper._
+
+@main(Messages("change.profile.title"), Some(user)) {
+    <link rel='stylesheet' href='@routes.Assets.versioned("styles/inline-block.css")'>
+    <link rel='stylesheet' href='@routes.Assets.versioned("styles/custom-table.css")'>
+    <div 'ads-top col-md-6 col-md-offset-6'>
+      <div class='row' style='text-align:center; margin-bottom:1em;'>
+      <!--
+        .img-responsive-overwrite{
+          margin: 0 auto;
+        }
+        -->
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- bar-ad -->
+        <ins class='adsbygoogle'
+          style='display:inline-block;width:728px;height:90px'
+          data-ad-client='@Configuration(ConfigFactory.load()).getString("googleAdsense.adClient").getOrElse("XX-XXX-XXXXXXXXXXXXXXXX")'
+          data-ad-slot='@Configuration(ConfigFactory.load()).getString("googleAdsense.homeTopBar").getOrElse("XXXXXXXXXX")'></ins>
+        <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+    </div>
+    @elements.sidebar(user)
+    <div class='user col-md-6'>
+        <div class='row data'>
+          <div class='col-md-12'>    
+            @if(user.changeableAccountName){
+            <div class='row'>
+              <p class='col-md-6'>
+                <strong>@Messages("account.name"):</strong>
+              </p>
+              <p class='col-md-6'>
+                アカウント名は一度だけ変えられます
+              </p>
+            </div>
+            @helper.form(action = routes.ApplicationController.submit()){
+            <div class='row'>
+              <div class='form-horizontal'>
+                @helper.CSRF.formField
+                <ul class='list-inline inl_block'>
+                  <li>
+                    <p class='col-md-1'></p>
+                  </li>
+                  <li>
+                    @b3.text(profileForm("accountName"),'_hiddenLabel -> Messages("account.name"), 'placeholder -> Messages("account.name"), 'class -> "form-control input-lg", '_error -> profileForm.error("accountName"), 'value -> user.accountName)
+                  </li>
+                  <li>
+                    <button id='accountName' name='accountName' type='submit' value='submit' class='btn btn-lg btn-primary btn-block'>@Messages("change.profiles")</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            }
+            }
+          </div>
+          <div class='col-md-12'>
+            <div class='row'>
+              <p class='col-md-6'>
+                <strong>@Messages("email"):</strong>
+              </p>
+            </div>
+            @helper.form(action = routes.ApplicationController.submit()){
+            <div class='row'>
+              <div class='form-horizontal'>
+                @helper.CSRF.formField
+                <ul class='list-inline inl_block'>
+                  <li>
+                    <p class='col-md-1'></p>
+                  </li>
+                  <li>
+                    @b3.text(profileForm("email"),'_hiddenLabel -> Messages("email"), 'placeholder -> Messages("email"), 'class -> "form-control input-lg", '_error -> profileForm.error("email"), 'value -> user.email.getOrElse(None))
+                  </li>
+                  <li>
+                    <button id='email' name='email' type='submit' value='submit' class='btn btn-lg btn-primary btn-block'>@Messages("change.profiles")</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            }
+          </div>
+          <div class='col-md-12'>
+            <div class='row'>
+              <p class='col-md-6'>
+                <strong>@Messages("user.name"):</strong>
+              </p>
+            </div>
+            @helper.form(action = routes.ApplicationController.submit()){
+            <div class='row'>
+              <div class='form-horizontal'>
+                @helper.CSRF.formField
+                <ul class='list-inline inl_block'>
+                  <li>
+                    <p class='col-md-1'></p>
+                  </li>
+                  <li>
+                    @b3.text(profileForm("userName"),'_hiddenLabel -> Messages("user.name"), 'placeholder -> Messages("user.name"), 'class -> "form-control input-lg", '_error -> profileForm.error("userName"), 'value -> user.userName.getOrElse(None))
+                  </li>
+                  <li>
+                    <button id='userName' name='userName' type='submit' value='submit' class='btn btn-lg btn-primary btn-block'>@Messages("change.profiles")</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            }
+          </div>
+          <div class='col-md-12'>
+            <div class='row'>
+              <p class='col-md-6'>
+                <strong>@Messages("birth.day"):</strong>
+              </p>
+            </div>
+            @helper.form(action = routes.ApplicationController.submit()){
+            <div class='row'>
+              <div class='form-horizontal'>
+                @helper.CSRF.formField
+                <ul class='list-inline inl_block'>
+                  <li>
+                    <p class='col-md-1'></p>
+                  </li>
+                  <li>
+                    @b3.date(profileForm("birthDay"),'_hiddenLabel -> Messages("birth.day"), 'placeholder -> Messages("birth.day"), 'class -> "form-control input-lg", '_error -> profileForm.error("birthDay"), 'value -> user.birthDay.getOrElse(None))
+                  </li>
+                  <li>
+                    <button id='birthDay' name='birthDay' type='submit' value='submit' class='btn btn-lg btn-primary btn-block'>@Messages("change.profiles")</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            }
+          </div>
+          <div class='col-md-12'>
+            <div class='row'>
+              <p class='col-md-6'>
+                <strong>@Messages("open.birth.day"):</strong>
+              </p>
+            </div>
+            @helper.form(action = routes.ApplicationController.submit()){
+            <div class='row'>
+              <div class='form-horizontal'>
+                @helper.CSRF.formField
+                <ul class='list-inline'>
+                  <li>
+                    <p class='col-md-1'></p>
+                  </li>
+                  <li>
+                    @b3.selectWithOptions(profileForm("openBirthDay"), openOptions, '_hiddenLabel -> Messages("open.birth.day"), 'placeholder -> Messages("open.birth.day"), 'class -> "form-control input-lg", '_error -> profileForm.error("openBirthDay"), 'value -> user.openBirthDay)
+                  </li>
+                  <li>
+                    <button id='openBirthDay' name='openBirthDay' type='submit' value='submit' class='btn btn-lg btn-primary btn-block'>@Messages("change.profiles")</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            }
+          </div>
+          <div class='col-md-12'>
+            <div class='row'>
+              <p class='col-md-6'>
+                <strong>@Messages("profile.comment"):</strong>
+              </p>
+            </div>
+            @helper.form(action = routes.ApplicationController.submit()){
+            <div class='row'>
+              <div class='form-horizontal'>
+                @helper.CSRF.formField
+                <table class='table_no_span'>
+                  <tr>
+                    <td>
+                      <p class='col-md-1'></p>
+                    </td>
+                    <td class='row table_left_sort table_padding'>
+                      @b3.textarea(profileForm("comment"),'_hiddenLabel -> Messages("profile.comment"), 'placeholder -> Messages("profile.comment"), 'class -> "form-control input-lg col-md-18", '_error -> profileForm.error("comment"), 'value -> user.comment.getOrElse(None))
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                    </td>
+                    <td class='inl_block'>
+                      <button id='comment' name='comment' type='submit' value='submit' class='btn btn-lg btn-primary btn-block'>@Messages("change.profiles")</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <p class='col-md-1'></p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <p class='col-md-1'></p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <p class='col-md-1'></p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            }
+          </div>
+          <div class='col-md-12'>
+            <div class='row'>
+              <p class='col-md-6'>
+                <strong>@Messages("profile.residence"):</strong>
+              </p>
+            </div>
+            @helper.form(action = routes.ApplicationController.submit()){
+            <div class='row'>
+              <div class='form-horizontal'>
+                @helper.CSRF.formField
+                <ul class='list-inline inl_block'>
+                  <li>
+                    <p class='col-md-1'></p>
+                  </li>
+                  <li>
+                    @b3.text(profileForm("residence"),'_hiddenLabel -> Messages("profile.residence"), 'placeholder -> Messages("profile.residence"), 'class -> "form-control input-lg", '_error -> profileForm.error("residence"), 'value -> user.residence.getOrElse(None))
+                  </li>
+                  <li>
+                    <button id='residence' name='residence' type='submit' value='submit' class='btn btn-lg btn-primary btn-block'>@Messages("change.profiles")</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            }
+          </div>
+          <div class='col-md-12'>
+            <div class='row'>
+              <p class='col-md-6'>
+                <strong>@Messages("open.profile.residence"):</strong>
+              </p>
+            </div>
+            @helper.form(action = routes.ApplicationController.submit()){
+            <div class='row'>
+              <div class='form-horizontal'>
+                @helper.CSRF.formField
+                <ul class='list-inline'>
+                  <li>
+                    <p class='col-md-1'></p>
+                  </li>
+                  <li>
+                    @b3.selectWithOptions(profileForm("openResidence"), openOptions, '_hiddenLabel -> Messages("open.profile.residence"), 'placeholder -> Messages("open.profile.residence"), 'class -> "form-control input-lg", '_error -> profileForm.error("openResidence"), 'value -> user.openResidence)
+                  </li>
+                  <li>
+                    <button id='openResidence' name='openResidence' type='submit' value='submit' class='btn btn-lg btn-primary btn-block'>@Messages("change.profiles")</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            }
+          </div>
+          <div class='col-md-12'>
+            <div class='row'>
+              <p class='col-md-6'>
+                <strong>@Messages("open.profile.history"):</strong>
+              </p>
+            </div>
+            @helper.form(action = routes.ApplicationController.submit()){
+            <div class='row'>
+              <div class='form-horizontal'>
+                @helper.CSRF.formField
+                <ul class='list-inline'>
+                  <li>
+                    <p class='col-md-1'></p>
+                  </li>
+                  <li>
+                    @b3.selectWithOptions(profileForm("openHistory"), openOptions, '_hiddenLabel -> Messages("open.profile.history"), 'placeholder -> Messages("open.profile.history"), 'class -> "form-control input-lg", '_error -> profileForm.error("openHistory"), 'value -> user.openHistory)
+                  </li>
+                  <li>
+                    <button id='openHistory' name='openHistory' type='submit' value='submit' class='btn btn-lg btn-primary btn-block'>@Messages("change.profiles")</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+    </div>
+</div>
+}

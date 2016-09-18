@@ -3,17 +3,19 @@
 # ~~~~
 
 # Dashboard pages
-GET     /profiles                   controllers.DashboardController.profiles
+GET     /dashboard                  controllers.DashboardController.profiles
 
 # Chat pages
 GET     /chat                       controllers.ChatController.chat
 GET     /socket                     controllers.ChatController.socket
-POST    /leave                      controllers.ChatController.leave
+GET     /leave                      controllers.ChatController.leave
 
 GET     /test                       controllers.ChatController.test
 
 # Authentication pages
 GET     /                           controllers.ApplicationController.index
+GET     /profile                    controllers.ApplicationController.profile
+POST    /profile                    controllers.ApplicationController.submit
 GET     /signOut                    controllers.ApplicationController.signOut
 GET     /authenticate/:provider     controllers.SocialAuthController.authenticate(provider)
 

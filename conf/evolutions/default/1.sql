@@ -8,6 +8,11 @@ create table `en_taku_user` (
   `userName` varchar(191),
   `avatarURL` varchar(254),
   `birthDay` date,
+  `openBirthDay` integer not null,
+  `comment` text,
+  `residence` varchar(191),
+  `openResidence` integer not null,
+  `openHistory` integer not null,
   `activated` boolean not null,
   `isAdmin` boolean not null,
   `changeableAccountName` boolean not null

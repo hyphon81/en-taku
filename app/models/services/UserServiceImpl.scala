@@ -109,6 +109,11 @@ class UserServiceImpl @Inject() (
             userName = profile.fullName,
             avatarURL = profile.avatarURL,
             birthDay = None,
+            openBirthDay = 0,
+            comment = None,
+            residence = None,
+            openResidence = 0,
+            openHistory = 3,
             activated = false,
             isAdmin = false,
             changeableAccountName = true

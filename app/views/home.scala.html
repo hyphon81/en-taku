@@ -4,6 +4,7 @@
 @import com.typesafe.config.ConfigFactory
 
 @main(Messages("home.title"), Some(user)) {
+@*<link rel='stylesheet' href='@routes.Assets.versioned("styles/sidebar.css")'>*@
     <div 'ads-top col-md-6 col-md-offset-6'>
       <div class='row' style='text-align:center; margin-bottom:1em;'>
       <!--
@@ -22,7 +23,8 @@
         </script>
       </div>
     </div>
-    <div class='user col-md-6 col-md-offset-3'>
+    @elements.sidebar(user)
+    <div class='user col-md-6'>
         <div class='row'>
             <hr class='col-md-12' />
             <h4 class='col-md-8'>@Messages("welcome.signed.in")</h4>
@@ -33,8 +35,9 @@
         </div>
         <div class='row data'>
             <div class='col-md-12'>
-                <div class='row'>
-                    <p class='col-md-6'><strong>@Messages("account.name"):</strong></p><p class='col-md-6'>@user.accountName</p>
+              <div class='row'>
+                  <p class='col-md-6'><strong>@Messages("account.name"):</strong></p>
+                  <p class='col-md-6'>@user.accountName</p>
                 </div>
                 <div class='row'>
                     <p class='col-md-6'><strong>@Messages("email"):</strong></p><p class='col-md-6'>@user.email.getOrElse("None")</p>

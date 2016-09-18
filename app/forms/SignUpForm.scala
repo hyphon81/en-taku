@@ -8,8 +8,8 @@ object SignUpForm {
   /**
    * The form data.
    *
-   * @param firstName The first name of a user.
-   * @param lastName The last name of a user.
+   * @param accountName The account name of a user.
+   * @param userName The user name of a user.
    * @param email The email of the user.
    * @param password The password of the user.
    */

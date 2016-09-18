@@ -1,4 +1,4 @@
-@(user: models.User)(implicit request: RequestHeader, messages: Messages, webJarAssets: WebJarAssets, flash: Flash)
+@(user: models.User, userName: String)(implicit request: RequestHeader, messages: Messages, webJarAssets: WebJarAssets, flash: Flash)
 
 @import views.html.elements.flashMessages
 @import views.html.elements.handlebars
@@ -63,21 +63,18 @@
         <textarea id='comment' class='form-control' cols='50' rows='5' name='comment' maxlength='1000' disabled></textarea>
       </div>
       <div class='col-sm-2'>
-        <button id='sendMessageButton' type='submit' disabled class='btn btn-lg btn-primary'>Send</button>
+        <button id='sendMessageButton' type='submit' disabled class='btn btn-lg btn-primary'>@Messages("send.message.button")</button>
       </div>
     </form>
   </div>
   <div class='row'>
     <div class='col-sm-10'>
-      User : @user.userName.getOrElse("Error: Nameless")
+      User : @userName
     </div>
     <div class='col-sm-2'>
-      <a class='button-form-link' href='#'>
-        <span class='glyphicon glyphicon-log-out'></span> Leave chat
+      <a class='button-form-link' href='@routes.ChatController.leave'>
+        <span class='glyphicon glyphicon-log-out'></span> @Messages("leave.chat")
       </a>
-      @helper.form(routes.ChatController.leave, 'class -> "button-form"){
-        @helper.CSRF.formField
-      }
     </div>
   </div>
 </div>

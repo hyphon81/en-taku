@@ -15,6 +15,7 @@ change.password.title = En-Taku - Change Password
 activate.account.title = En-Taku - Activate Account
 terms.of.use = Terms of use
 privacy.policy = Privacy policy
+change.profile.title = En-taku - Change Profile
 
 toggle.navigation = Toggle navigation
 welcome.signed.in = Welcome, you are now signed in!
@@ -31,6 +32,12 @@ home = Home
 account.name = Account name
 user.name = User name
 email = Email
+birth.day = Birthday
+open.birth.day = Publication range of birth day
+profile.comment = Comment
+profile.residence = Residence
+open.profile.residence = Publication range of residence
+open.profile.history = Publication range of playing history
 password = Password
 confirm.password = Confirm password
 send = Send
@@ -74,6 +81,20 @@ password.changed = Your password has been changed.
 google = Google
 facebook = Facebook
 twitter = Twitter
+
+change.profiles = Change
+change.profile = Change Profile
+error.did.not.change.name = The name didn't change
+error.this.email.has.been.used = This email address has been used
+open.to.all = publicate for all
+open.to.follower = publicate for your follower
+open.to.cofollower = publicate for co follower
+open.to.none = Don't publicate
+
+leave.chat = Leave chat
+see.you.soon = See you soon!
+send.message.button = Send
+none.name = Nameless
 
 ##########
 # Emails

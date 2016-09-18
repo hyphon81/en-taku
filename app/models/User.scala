@@ -25,6 +25,11 @@ case class User(
   userName: Option[String],
   avatarURL: Option[String],
   birthDay: Option[Date],
+  openBirthDay: Int,
+  comment: Option[String],
+  residence: Option[String],
+  openResidence: Int,
+  openHistory: Int,
   activated: Boolean,
   isAdmin: Boolean,
   changeableAccountName: Boolean

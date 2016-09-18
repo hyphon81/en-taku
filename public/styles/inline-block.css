@@ -1,0 +1,4 @@
+ul.inl_block li {
+  display: inline-block; /* 横並び */
+  vertical-align: top; /* li要素を上端揃えに */
+}

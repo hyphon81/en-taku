@@ -15,6 +15,7 @@ change.password.title = En-Taku - パスワード変更
 activate.account.title = En-Taku - アカウント有効化
 terms.of.use = 利用規約
 privacy.policy = プライバシーポリシ
+change.profile.title = En-taku - プロフィール変更
 
 toggle.navigation = Toggle navigation
 welcome.signed.in = ようこそ!
@@ -31,6 +32,12 @@ home = ホーム
 account.name = アカウント名
 user.name = ユーザ名
 email = Email
+birth.day = 生年月日
+open.birth.day = 生年月日の公開範囲
+profile.comment = コメント
+profile.residence = 居住地
+open.profile.residence = 居住地の公開範囲
+open.profile.history = 遊んだ履歴の公開範囲
 password = パスワード
 confirm.password = パスワードの確認
 send = 送信
@@ -74,6 +81,20 @@ password.changed = パスワードを変更したよ。
 google = Google
 facebook = Facebook
 twitter = Twitter
+
+change.profiles = 変更
+change.profile = プロフィールの変更
+error.did.not.change.name = 名前が変更されていません
+error.this.email.has.been.used = このメールアドレスは既に使われています
+open.to.all = 全体に公開
+open.to.follower = 自分のフォロワーに公開
+open.to.cofollower = 相互フォロワーに公開
+open.to.none = 公開しない
+
+leave.chat = 退出
+see.you.soon = 次回をおたのしみに!
+send.message.button = 送信
+none.name = ななし
 
 ##########
 # Emails

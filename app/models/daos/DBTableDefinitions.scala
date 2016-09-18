@@ -20,6 +20,11 @@ trait DBTableDefinitions {
     userName: Option[String],
     avatarURL: Option[String],
     birthDay: Option[Date],
+    openBirthDay: Int,
+    comment: Option[String],
+    residence: Option[String],
+    openResidence: Int,
+    openHistory: Int,
     activated: Boolean,
     isAdmin: Boolean,
     changeableAccountName: Boolean
@@ -32,6 +37,11 @@ trait DBTableDefinitions {
     def userName = column[Option[String]]("userName")
     def avatarURL = column[Option[String]]("avatarURL")
     def birthDay = column[Option[Date]]("birthDay")
+    def openBirthDay = column[Int]("openBirthDay")
+    def comment = column[Option[String]]("comment")
+    def residence = column[Option[String]]("residence")
+    def openResidence = column[Int]("openResidence")
+    def openHistory = column[Int]("openHistory")
     def activated = column[Boolean]("activated")
     def isAdmin = column[Boolean]("isAdmin")
     def changeableAccountName = column[Boolean]("changeableAccountName")
@@ -43,6 +53,11 @@ trait DBTableDefinitions {
         userName,
         avatarURL,
         birthDay,
+        openBirthDay,
+        comment,
+        residence,
+        openResidence,
+        openHistory,
         activated,
         isAdmin,
         changeableAccountName

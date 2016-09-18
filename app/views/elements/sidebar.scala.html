@@ -1,0 +1,23 @@
+@(user: models.User)(implicit request: RequestHeader, messages: Messages, webJarAssets: WebJarAssets)
+
+
+
+@*サイドバー*@
+<div class='user col-md-3 sidebar'>
+  <div class='row'>
+    <div class='col-md-4 text-right'>
+      <img src='@user.avatarURL.getOrElse(routes.Assets.versioned("images/silhouette.png"))' height='120px' />
+    </div>
+  </div>
+  <div class='row'>
+    <hr class='col-md-4' />
+  </div>
+  <div class='row data'>
+    <div class='row'>
+      <a href='@routes.ApplicationController.index()' title='@user.accountName'>@user.accountName</a>
+    </div>
+    <div class='row'>
+      <a href='@routes.ApplicationController.profile()' title='@Messages("change.profile")'>@Messages("change.profile")</a>
+    </div>
+  </div>
+</div>

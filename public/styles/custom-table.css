@@ -1,0 +1,11 @@
+.table_no_span {
+  border-collapse: collapse;
+}
+
+.table_left_sort {
+  horizontal-align: left
+}
+
+.table_padding {
+    padding: 0.5em 1em;
+}
